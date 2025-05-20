@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="shop.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <a href="index.html"><h1>Your Shopping Cart</h1></a>
+    <div class="shopping">
+        <img src="cart.jpg" alt="Shopping Cart" class="cart-icon">
+        <span class="quantity">0</span>
+    </div>
+    </header>
+    <div class="list"></div>
+</div>
+<div class="card">
+    <h1>Card</h1>
+    <ul class="listcard"></ul>
+    <div class="checkout"></div>
+    <div class="total">0</div>
+    <div class="closeShopping">Close</div>
+</div>
+<script>
+
+    // JavaScript code here
+     // Selectors for elements
+     let openShopping = document.querySelector('.cart-icon'); // Changed selector to cart icon
+    let closeShopping = document.querySelector('.closeShopping');
+    let list = document.querySelector('.list');
+    let listCard = document.querySelector('.listcard');
+    let body = document.querySelector('body'); // Corrected selector
+    let total = document.querySelector('.total');
+    let quantity = document.querySelector('.quantity');
+    let cartSection = document.querySelector('.card');
+    
+    // Event listener for the shopping cart icon
+    openShopping.addEventListener('click', () => {
+        body.classList.toggle('active');
+    });
+    
+    // Event listener for closing the cart section
+    closeShopping.addEventListener('click', () => {
+        body.classList.remove('active');
+    });
+    
+    // Array of products
+    let products = [
+    {
+        id: 1,
+        name: 'PRODUCT NAME 1',
+        image: 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRH47LnHihPZoOdCiN7cXb5KyhDYzR2BlFVH-jemmhGpktWioQ2ciZSNOejvZxHiz07XOxLEhC0tz1l77Xzl7b-gbWWISLdP-cDfk-vK1g2zxKKI33eEExKWnU&usqp=CAc',
+        price: 1200
+    },
+    
+    {
+        id: 2,
+        name: 'PRODUCT NAME 2',
+        image: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR6F-vX2f7R3OYJm-n9mqzmnJZ5vN5rfWx5y5ns0kaGF42iucl-bJLd5iRL_xrjBomH_UtmuRu23quZdXJscEMJr7zTutS6R53KxyTjrIJLmXibb_1rnS7Gd4a7xEpXkt-7kvC4bTq0&usqp=CAc', // Ensure correct image file extension and path
+        price: 1600
+    },
+    {
+        id: 3,
+        name: 'PRODUCT NAME 3',
+        image: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSnGGIEtXDjzphuN9QvodQ01A91q_1WVMc0XjEWP7iUEXYLeKSJgWJF1TW960G3fGaUagudhx7MXlZkLvlYflCgLKBrfIJNaQPQOJAYIaFIcOQkF1lO08cFRJkL-OIa948p57_9zAk&usqp=CAc', // Placeholder link for the third product image
+        price: 1400
+    },
+    {
+        id: 4,
+        name: 'PRODUCT NAME 4',
+        image: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRP8gNQ4jdbknCfDULRuPsBLlzMk4ASV4YxUFxRigOAnXH4tVbjiGzr6yQUQ7nBGGXoaK7CfB42Q2OvVI95vf0bN79SYfmDbFgkUtxG6_ctvGs8OU9phDUlNI1Ie4L-6EXniR5652nb&usqp=CAc', // Placeholder link for the fourth product image
+        price: 1500
+    },
+    {
+        id: 5,
+        name: 'PRODUCT NAME 5',
+        image: 'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQBL8WKpqCEoqVXXW4B5Sx4EKygPof_Z-xQ1EPjLfHHaERuYJ0Fx7luSPkA2l7pHzbcQenSTp0aZH_m_s48iaSOp4eXFTQpOqeHffh07uFO97KjLw2P2qqwH9I&usqp=CAc', // Placeholder link for the fifth product image
+        price: 1800
+    },
+    {
+        id: 6,
+        name: 'PRODUCT NAME 6',
+        image: 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS4xTWVChGAnRTcHMWNLD_y7iSWmep_7NVfoAuAj5WPBtVbu3ZweS6ZT4bEZBgPifS0Cg4Zywy4Wwj_YDUYfVKV9SiCTBsrW_0uu2GXsLMp-IY1SGzYQH40hMK8cNPmdrmDVuT6TJA&usqp=CAc', // Placeholder link for the sixth product image
+        price: 1700
+    },
+    ];
+    
+    
+    // Function to initialize the application
+    function initApp() {
+        products.forEach((value, key) => {
+            let newDiv = document.createElement('div');
+            newDiv.classList.add('item');
+            newDiv.innerHTML = `
+                <img src="${value.image}" alt="${value.name}"> <!-- Ensure correct path to image -->
+                <div class="title">${value.name}</div>
+                <div class="price">${value.price.toLocaleString()}</div>
+                <button onclick="addToCart(${key})">Add to Cart</button>
+            `;
+            list.appendChild(newDiv);
+        });
+    }
+    
+    // Call the initApp function to initialize the application
+    initApp();
+    
+    // Define the addToCart function
+    function addToCart(key) {
+        if (listCards[key] == null) {
+            listCards[key] = products[key];
+            listCards[key].quantity = 1;
+        }
+        reloadCard();
+    }
+    
+    // Define the reloadCard function
+    function reloadCard() {
+        listCard.innerHTML = '';
+        let count = 0;
+        let totalPrice = 0;
+        listCards.forEach((value, key) => {
+            totalPrice += value.price;
+            count += value.quantity;
+    
+            if (value != null) {
+                let newDiv = document.createElement('li');
+                newDiv.innerHTML = `
+                    <div><img src="${value.image}" alt="${value.name}"></div>
+                    <div>${value.name}</div>
+                    <div>${value.price.toLocaleString()}</div>
+                    <div>${value.quantity}</div>
+                    <div>
+                        <button onclick="changeQuantity(${key}, ${value.quantity - 1})">-</button>
+                        <div class="count">${value.quantity}</div>
+                        <button onclick="changeQuantity(${key}, ${value.quantity + 1})">+</button>
+                    </div>
+                `;
+                listCard.appendChild(newDiv);
+            }
+        });
+        total.innerText = totalPrice.toLocaleString();
+        quantity.innerText = count;
+    }
+    
+    // Define the changeQuantity function
+    function changeQuantity(key, quantity) {
+        if (quantity == 0) {
+            delete listCards[key];
+        } else {
+            listCards[key].quantity = quantity;
+            listCards[key].price = quantity * products[key].price;
+        }
+        reloadCard();
+    }
+    
+    // Array to hold selected products
+    let listCards = [];
+</script>
+
+</body>
+</html>

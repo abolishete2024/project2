@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Corrected link to CSS file -->
+    <link rel="stylesheet" href="shop.css">
+</head>
+<body>
+<div class="container">
+    <header>
+    <a href="index.html"><h1>Your Shopping Cart</h1></a>
+    <div class="shopping">
+        <!-- Ensure correct path to cart image -->
+        <img src="cart.jpg" alt="Shopping Cart" class="cart-icon">
+        <span class="quantity">0</span>
+    </div>
+    </header>
+    <div class="list"></div>
+</div>
+<div class="card">
+    <h1>Card</h1>
+    <ul class="listcard"></ul>
+    <div class="checkout"></div>
+    <div class="total">0</div>
+    <!-- Corrected class name -->
+    <div class="closeShopping">Close</div>
+</div>
+<script>
+    // Selectors for elements
+    let openShopping = document.querySelector('.cart-icon'); // Changed selector to cart icon
+    let closeShopping = document.querySelector('.closeShopping');
+    let list = document.querySelector('.list');
+    let listCard = document.querySelector('.listcard');
+    let body = document.querySelector('body'); // Corrected selector
+    let total = document.querySelector('.total');
+    let quantity = document.querySelector('.quantity');
+    let cartSection = document.querySelector('.card');
+    
+    // Event listener for the shopping cart icon
+    openShopping.addEventListener('click', () => {
+        body.classList.toggle('active');
+    });
+    
+    // Event listener for closing the cart section
+    closeShopping.addEventListener('click', () => {
+        body.classList.remove('active');
+    });
+    
+    // Array of products
+    let products = [
+    {
+        id: 1,
+        name: 'PRODUCT NAME 1',
+        image: 'https://assets.ajio.com/medias/sys_master/root/20231009/WC5V/6523e850afa4cf41f532e5a1/-473Wx593H-466683488-blue-MODEL.jpg',
+        price: 1600
+    },
+    
+    {
+        id: 2,
+        name: 'PRODUCT NAME 2',
+        image: 'https://assets.ajio.com/medias/sys_master/root/20231009/EPSg/6523e368ddf77915192ad1b9/-473Wx593H-466683475-grey-MODEL.jpg', // Ensure correct image file extension and path
+        price: 1800
+    },
+    {
+        id: 3,
+        name: 'PRODUCT NAME 3',
+        image: 'https://m.media-amazon.com/images/I/71uGyOMZOaL._AC_UF1000,1000_QL80_.jpg', // Ensure correct image file extension and path
+        price: 1400
+    },
+    {
+        id: 4,
+        name: 'PRODUCT NAME 4',
+        image: 'https://img3.junaroad.com/uiproducts/18822812/pri_175_p-1670498380.jpg', // Placeholder link for the fourth product image
+        price: 1500
+    },
+    {
+        id: 5,
+        name: 'PRODUCT NAME 5',
+        image: 'https://rukminim2.flixcart.com/image/550/650/xif0q/jean/h/0/a/34-united192-united-denim-original-imagyvu67vpm68dh.jpeg?q=90&crop=false', // Placeholder link for the fourth product image
+        price: 1800
+    },
+    {
+        id: 6,
+        name: 'PRODUCT NAME 6',
+        image: 'https://rukminim2.flixcart.com/image/850/1000/knni7ww0/jean/l/k/s/34-ssum021jn-s2l-m-pln-bu-campus-sutra-original-imag2aapa2qne7yy.jpeg?q=20&crop=false', // Placeholder link for the sixth product image
+        price: 1700
+    },
+    ];
+    
+    
+    // Function to initialize the application
+    function initApp() {
+        products.forEach((value, key) => {
+            let newDiv = document.createElement('div');
+            newDiv.classList.add('item');
+            newDiv.innerHTML = `
+                <img src="${value.image}" alt="${value.name}"> <!-- Ensure correct path to image -->
+                <div class="title">${value.name}</div>
+                <div class="price">${value.price.toLocaleString()}</div>
+                <button onclick="addToCart(${key})">Add to Cart</button>
+            `;
+            list.appendChild(newDiv);
+        });
+    }
+    
+    // Call the initApp function to initialize the application
+    initApp();
+    
+    // Define the addToCart function
+    function addToCart(key) {
+        if (listCards[key] == null) {
+            listCards[key] = products[key];
+            listCards[key].quantity = 1;
+        }
+        reloadCard();
+    }
+    
+    // Define the reloadCard function
+    function reloadCard() {
+        listCard.innerHTML = '';
+        let count = 0;
+        let totalPrice = 0;
+        listCards.forEach((value, key) => {
+            totalPrice += value.price;
+            count += value.quantity;
+    
+            if (value != null) {
+                let newDiv = document.createElement('li');
+                newDiv.innerHTML = `
+                    <div><img src="${value.image}" alt="${value.name}"></div>
+                    <div>${value.name}</div>
+                    <div>${value.price.toLocaleString()}</div>
+                    <div>${value.quantity}</div>
+                    <div>
+                        <button onclick="changeQuantity(${key}, ${value.quantity - 1})">-</button>
+                        <div class="count">${value.quantity}</div>
+                        <button onclick="changeQuantity(${key}, ${value.quantity + 1})">+</button>
+                    </div>
+                `;
+                listCard.appendChild(newDiv);
+            }
+        });
+        total.innerText = totalPrice.toLocaleString();
+        quantity.innerText = count;
+    }
+    
+    // Define the changeQuantity function
+    function changeQuantity(key, quantity) {
+        if (quantity == 0) {
+            delete listCards[key];
+        } else {
+            listCards[key].quantity = quantity;
+            listCards[key].price = quantity * products[key].price;
+        }
+        reloadCard();
+    }
+    
+    // Array to hold selected products
+    let listCards = [];
+</script>
+</body>
+</html>

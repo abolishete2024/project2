@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Wishlist</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <style>
+        .product {
+    margin-bottom: 20px;
+}
+
+.heart {
+    cursor: pointer;
+    font-size: 24px;
+    color: black;
+}
+
+.heart.added {
+    color: red;
+}
+
+.wishlist {
+    margin-top: 50px;
+}
+
+.wishlist-item {
+    list-style: none;
+    margin-bottom: 10px;
+}
+
+    </style>
+    <div class="product">
+        <h2>Product Name</h2>
+        <p>Description of the product.</p>
+        <span class="heart" onclick="addToWishlist(this)">&#x2661;</span>
+    </div>
+
+    <div class="wishlist">
+        <h2>My Wishlist</h2>
+        <ul id="wishlistItems">
+            <!-- Wishlist items will be added here dynamically -->
+        </ul>
+    </div>
+
+    <script>
+        function addToWishlist(heart) {
+    // Toggle heart color
+    heart.classList.toggle('added');
+
+    // Get product details
+    var productName = document.querySelector('.product h2').innerText;
+    var productDescription = document.querySelector('.product p').innerText;
+
+    // Check if product is already in wishlist
+    var isAlreadyAdded = document.querySelector(`#wishlistItems li[data-name="${productName}"]`);
+
+    if (!isAlreadyAdded) {
+        // Create wishlist item
+        var wishlistItem = document.createElement('li');
+        wishlistItem.classList.add('wishlist-item');
+        wishlistItem.dataset.name = productName;
+        wishlistItem.innerHTML = `
+            <strong>${productName}</strong>: ${productDescription}
+        `;
+
+        // Add item to wishlist
+        document.getElementById('wishlistItems').appendChild(wishlistItem);
+    } else {
+        // Remove item from wishlist if already added
+        isAlreadyAdded.remove();
+    }
+}
+
+    </script>
+</body>
+</html>
